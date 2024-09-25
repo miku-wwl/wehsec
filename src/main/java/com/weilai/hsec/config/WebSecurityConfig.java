@@ -3,6 +3,7 @@ package com.weilai.hsec.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -33,6 +34,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .formLogin(withDefaults());//表单授权方式
 //                .httpBasic(withDefaults());//基本授权方式
+        http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
