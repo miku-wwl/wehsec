@@ -1,5 +1,9 @@
 package com.weilai.hsec.config;
 
+import com.weilai.hsec.config.securityHandler.MyAuthenticationEntryPoint;
+import com.weilai.hsec.config.securityHandler.MyAuthenticationFailureHandler;
+import com.weilai.hsec.config.securityHandler.MyAuthenticationSuccessHandler;
+import com.weilai.hsec.config.securityHandler.MyLogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,11 +41,20 @@ public class WebSecurityConfig {
                             .loginPage("/login").permitAll() //登录页面无需授权即可访问
                             .usernameParameter("username") //自定义表单用户名参数，默认是username
                             .passwordParameter("password") //自定义表单密码参数，默认是password
-                            .failureUrl("/login?error") //登录失败的返回地址
-                    ;
+                            .failureUrl("/login?error"); //登录失败的返回地址
+                    form.successHandler(new MyAuthenticationSuccessHandler()); //认证成功时的处理
+                    form.failureHandler(new MyAuthenticationFailureHandler()); //认证失败时的处理
                 }); //使用表单授权方式
         http.csrf(AbstractHttpConfigurer::disable);
-
+        http.logout(logout -> {
+            logout.logoutSuccessHandler(new MyLogoutSuccessHandler()); //注销成功时的处理
+        });
+        //错误处理
+        http.exceptionHandling(exception -> {
+            exception.authenticationEntryPoint(new MyAuthenticationEntryPoint());//请求未认证的接口
+        });
+        //跨域
+        http.cors(withDefaults());
         return http.build();
     }
 }
