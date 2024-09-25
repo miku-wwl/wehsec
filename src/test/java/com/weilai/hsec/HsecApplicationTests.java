@@ -15,7 +15,7 @@ class HsecApplicationTests {
         long startTime = System.currentTimeMillis();
 
         // 工作因子，默认值是10，最小值是4，最大值是31，值越大运算速度越慢
-        PasswordEncoder encoder = new BCryptPasswordEncoder(4);
+        PasswordEncoder encoder = new BCryptPasswordEncoder(10);
         //明文："password"
         //密文：result，即使明文密码相同，每次生成的密文也不一致
         String result = encoder.encode("password");
