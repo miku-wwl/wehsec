@@ -1,9 +1,6 @@
 package com.weilai.hsec.config;
 
-import com.weilai.hsec.config.securityHandler.MyAuthenticationEntryPoint;
-import com.weilai.hsec.config.securityHandler.MyAuthenticationFailureHandler;
-import com.weilai.hsec.config.securityHandler.MyAuthenticationSuccessHandler;
-import com.weilai.hsec.config.securityHandler.MyLogoutSuccessHandler;
+import com.weilai.hsec.config.securityHandler.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,6 +52,13 @@ public class WebSecurityConfig {
         });
         //跨域
         http.cors(withDefaults());
+
+        //会话管理
+        http.sessionManagement(session -> {
+            session
+                    .maximumSessions(1)
+                    .expiredSessionStrategy(new MySessionInformationExpiredStrategy());
+        });
         return http.build();
     }
 }
