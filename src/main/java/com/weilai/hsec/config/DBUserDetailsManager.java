@@ -3,15 +3,11 @@ package com.weilai.hsec.config;
 import com.weilai.hsec.entity.User;
 import com.weilai.hsec.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Component
 public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService {
@@ -25,10 +21,10 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
         if (user == null) {
             throw new UsernameNotFoundException(username);
         } else {
-            Collection<GrantedAuthority> authorities = new ArrayList<>();
-
-            authorities.add(() -> "USER_LIST");
-            authorities.add(() -> "USER_ADD");
+//            Collection<GrantedAuthority> authorities = new ArrayList<>();
+//
+//            authorities.add(() -> "USER_LIST");
+//            authorities.add(() -> "USER_ADD");
 
             /*authorities.add(new GrantedAuthority() {
                 @Override
@@ -43,14 +39,19 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
                 }
             });*/
 
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getEnabled(),
-                    true, //用户账号是否过期
-                    true, //用户凭证是否过期
-                    true, //用户是否未被锁定
-                    authorities); //权限列表
+//            return new org.springframework.security.core.userdetails.User(
+//                    user.getUsername(),
+//                    user.getPassword(),
+//                    user.getEnabled(),
+//                    true, //用户账号是否过期
+//                    true, //用户凭证是否过期
+//                    true, //用户是否未被锁定
+//                    authorities); //权限列表
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(user.getUsername())
+                    .password(user.getPassword())
+                    .roles("ADMIN")
+                    .build();
         }
     }
 

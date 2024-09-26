@@ -32,16 +32,14 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //authorizeRequests()：开启授权保护
+         //authorizeHttpRequests()：开启授权保护
         //anyRequest()：对所有请求开启授权保护
         //authenticated()：已认证请求会自动被授权
         //开启授权保护
         http.authorizeHttpRequests(
                 authorize -> authorize
-                        //具有USER_LIST权限的用户可以访问/user/list
-                        .requestMatchers("/user/list").hasAuthority("USER_LIST")
-                        //具有USER_ADD权限的用户可以访问/user/add
-                        .requestMatchers("/user/add").hasAuthority("USER_ADD")
+                        //具有管理员角色的用户可以访问/user/**
+                        .requestMatchers("/user/**").hasRole("ADMIN")
                         //对所有请求开启授权保护
                         .anyRequest()
                         //已认证的请求会被自动授权
