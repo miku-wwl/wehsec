@@ -50,7 +50,10 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
             return org.springframework.security.core.userdetails.User
                     .withUsername(user.getUsername())
                     .password(user.getPassword())
+                    .credentialsExpired(false)
+                    .accountLocked(false)
                     .roles("ADMIN")
+//                    .authorities("USER_ADD", "USER_UPDATE")  roles 和 authorities 不能同时使用
                     .build();
         }
     }

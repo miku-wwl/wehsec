@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.weilai.hsec.config.securityHandler.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
 //    @Bean
@@ -32,14 +34,14 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-         //authorizeHttpRequests()：开启授权保护
+        //authorizeHttpRequests()：开启授权保护
         //anyRequest()：对所有请求开启授权保护
         //authenticated()：已认证请求会自动被授权
         //开启授权保护
         http.authorizeHttpRequests(
                 authorize -> authorize
                         //具有管理员角色的用户可以访问/user/**
-                        .requestMatchers("/user/**").hasRole("ADMIN")
+                        //.requestMatchers("/user/**").hasRole("ADMIN")
                         //对所有请求开启授权保护
                         .anyRequest()
                         //已认证的请求会被自动授权
